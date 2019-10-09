@@ -52,9 +52,9 @@ class Twitterclans:
 				self.twitter_api.PostUpdate(status)
 
 				self.logger.debug(f'Tweeted.')
-				await asyncio.sleep(60*60)
 			except Exception as e:
 				self.logger.critical(e)
+			await asyncio.sleep(60*60)
 	
 
 	def _get_clan_total(self) -> int:
