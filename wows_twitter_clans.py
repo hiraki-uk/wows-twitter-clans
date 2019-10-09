@@ -96,12 +96,14 @@ if __name__ == '__main__':
 	secret_key = os.getenv('KEY_SECRET')
 	token = os.getenv('TOKEN')
 	secret_token = os.getenv('TOKEN_SECRET')
+	api_key = os.getenv('API_KEY')
 
 	tc = Twitterclans(
 		key,
 		secret_key,
 		token,
-		secret_key
+		secret_key,
+		api_key
 	)
 
 	loop = asyncio.get_event_loop()
