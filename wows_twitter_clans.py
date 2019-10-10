@@ -54,7 +54,6 @@ class Twitterclans:
 					status = status[:-exceed_count]
 				self.twitter_api.PostUpdate(status)
 				
-
 				self.logger.debug(f'Tweeted.')
 			except Exception as e:
 				self.logger.critical(e)
@@ -106,7 +105,7 @@ if __name__ == '__main__':
 		key,
 		secret_key,
 		token,
-		secret_key,
+		secret_token,
 		api_key
 	)
 
