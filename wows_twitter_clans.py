@@ -16,6 +16,9 @@ from logger import Logger
 from wowspy import Wows
 
 
+load_dotenv(dotenv_path='.env')
+
+
 class Twitterclans:
 	def __init__(self, key, secret_key, token, token_secret, api_key):
 		self.twitter_api = twitter.Api(
@@ -49,7 +52,8 @@ class Twitterclans:
 				if 135 < len(status):
 					exceed_count = 135 - len(status)
 
-				self.twitter_api.PostUpdate(status)
+				# self.twitter_api.PostUpdate(status)
+				
 
 				self.logger.debug(f'Tweeted.')
 			except Exception as e:
