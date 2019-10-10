@@ -51,7 +51,7 @@ class Twitterclans:
 				# tweet
 				if 135 < len(status):
 					exceed_count = 135 - len(status)
-
+					status = status[:-exceed_count]
 				self.twitter_api.PostUpdate(status)
 				
 
