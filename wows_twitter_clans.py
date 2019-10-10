@@ -52,7 +52,7 @@ class Twitterclans:
 				if 135 < len(status):
 					exceed_count = 135 - len(status)
 
-				# self.twitter_api.PostUpdate(status)
+				self.twitter_api.PostUpdate(status)
 				
 
 				self.logger.debug(f'Tweeted.')
