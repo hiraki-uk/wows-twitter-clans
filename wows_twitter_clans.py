@@ -1,7 +1,4 @@
 import asyncio
-import json
-import random
-import asyncio
 import datetime
 import json
 import math
@@ -10,10 +7,11 @@ import random
 
 import twitter
 from dotenv import load_dotenv
+from twitter.twitter_utils import \
+    calc_expected_status_length as calc_status_length
+from wowspy import Wows
 
 from logger import Logger
-
-from wowspy import Wows
 
 
 load_dotenv(dotenv_path='.env')
@@ -47,14 +45,13 @@ class Twitterclans:
 					status = _create_status(clan_detail)
 					if status is not None:
 						break
-				self.logger.debug(f'Status created: {status}')
+
 				# tweet
-				if 135 < len(status):
-					exceed_count = 135 - len(status)
-					status = status[:exceed_count]
-				self.twitter_api.PostUpdate(status)
-				
+				final_status = _optimize_status(status)
+				self.logger.debug(f'tweeting:\n{final_status}')
+				self.twitter_api.PostUpdate(final_status)
 				self.logger.debug(f'Tweeted.')
+
 			except Exception as e:
 				self.logger.critical(e)
 			await asyncio.sleep(60*60)
@@ -72,7 +69,7 @@ class Twitterclans:
 	def _get_clan_detail(self, clan_id: int):
 		detail = self.wows_api.clan_details(self.wows_api.region.AS, language='ja', clan_id=clan_id)
 		return detail['data'][str(clan_id)]
-		
+
 
 def _create_status(detail):
 	if detail['members_count'] < 6:
@@ -89,9 +86,23 @@ def _create_status(detail):
 	description = detail['description']
 
 	status = f'[{tag}] {name}\n' \
-			f'クランマスター：{leader_name}　在籍数：{members_count}\n\n' \
-			f'クラン概要：{description}'
+			f'クラマス：{leader_name}　在籍数：{members_count}\n\n' \
+			f'{description}'
 	return status
+
+
+def _optimize_status(status):
+	# if over 280 limit shorten status
+	temp_status = status
+	if not calc_status_length(temp_status) < 270:
+		# using while as removing exceed_length not always work 
+		# due to 2 length letters and 1 length letters
+		while 270 < calc_status_length(temp_status):
+			exceed_length = (270 - calc_status_length(temp_status)) // 2
+			status = status[:exceed_length]
+			temp_status = f'{status}...'
+	final_status = temp_status
+	return final_status
 
 
 if __name__ == '__main__':
@@ -110,7 +121,6 @@ if __name__ == '__main__':
 	)
 
 	loop = asyncio.get_event_loop()
-
 	try:
 		loop.run_until_complete(
 			asyncio.wait([
