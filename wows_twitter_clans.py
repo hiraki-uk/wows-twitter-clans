@@ -93,6 +93,8 @@ def _create_status(detail):
 
 def _optimize_status(status):
 	# if over 280 limit shorten status
+	status.replace('@', '@/')
+	status.replace('＠', '@/')
 	temp_status = status
 	if not calc_status_length(temp_status) < 270:
 		# using while as removing exceed_length not always work 
