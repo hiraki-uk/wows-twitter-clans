@@ -108,10 +108,10 @@ def _optimize_status(status):
 
 
 if __name__ == '__main__':
-	key = os.getenv('KEY')
-	secret_key = os.getenv('KEY_SECRET')
-	token = os.getenv('TOKEN')
-	secret_token = os.getenv('TOKEN_SECRET')
+	key = os.getenv('TWITTER_KEY')
+	secret_key = os.getenv('TWITTER_KEY_SECRET')
+	token = os.getenv('TWITTER_TOKEN')
+	secret_token = os.getenv('TWITTER_TOKEN_SECRET')
 	api_key = os.getenv('API_KEY')
 
 	tc = Twitterclans(
